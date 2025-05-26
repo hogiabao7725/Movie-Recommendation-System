@@ -152,30 +152,4 @@ async def get_movie_videos(movie_id: int):
         ]
     except Exception as e:
         logger.error(f"Error fetching movie videos: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/movies/details", response_model=List[Movie])
-async def get_movies_details(ids: str = Query(..., description="Comma-separated list of movie IDs")):
-    """Get details for multiple movies by IDs (batch endpoint)"""
-    try:
-        id_list = [int(i) for i in ids.split(",") if i.strip().isdigit()]
-        movies = []
-        for movie_id in id_list:
-            try:
-                movie = tmdb_service.get_movie_details(movie_id)
-                movies.append(Movie(
-                    id=movie["id"],
-                    title=movie["title"],
-                    overview=movie["overview"],
-                    poster_path=tmdb_service.get_poster_url(movie["poster_path"]),
-                    release_date=movie["release_date"],
-                    vote_average=movie["vote_average"],
-                    genres=[genre["name"] for genre in movie["genres"]]
-                ))
-            except Exception as e:
-                logger.error(f"Error fetching details for movie {movie_id}: {str(e)}")
-                continue  # Skip movies that fail
-        return movies
-    except Exception as e:
-        logger.error(f"Error in batch movie details: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e)) 

@@ -91,29 +91,9 @@ const ApiService = {
                 }
                 return response.json();
             });
-    },    /**
-     * Get multiple movie details by IDs
-     * @param {Array} movieIds - Array of movie IDs
-     * @returns {Promise} - Promise with multiple movie details
-     */
-    getMultipleMovies: function(movieIds) {
-        const idsString = movieIds.join(',');
-        console.log(`Fetching multiple movies with IDs: ${idsString}`);
-        console.log(`URL: ${API_BASE_URL}/movies/details?ids=${idsString}`);
-        
-        return fetch(`${API_BASE_URL}/movies/details?ids=${idsString}`)
-            .then(response => {
-                console.log('Multiple movies response:', response);
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .catch(error => {
-                console.error('Error fetching multiple movies:', error);
-                throw error;
-            });
-    },/**
+    },
+
+    /**
      * Get personalized movie recommendations for a user
      * @param {number} userId - User ID
      * @param {number} count - Number of recommendations to get

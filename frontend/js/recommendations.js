@@ -71,42 +71,23 @@ function loadRecommendations(userId) {
             }
             
             // Get movie details for recommended movies
-            const movieIds = recommendations.map(rec => rec.movieId);
-            console.log('Fetching details for movie IDs:', movieIds);
-              return ApiService.getMultipleMovies(movieIds)
-                .then(movieDetails => {
-                    console.log('Received movie details:', movieDetails);
-                    // Combine recommendation data with movie details
-                    const fullRecommendations = recommendations.map(rec => {
-                        const movie = movieDetails.find(m => m.id === rec.movieId);
-                        if (movie) {
-                            console.log('Matched movie:', movie.title, 'with recommendation for movie ID:', rec.movieId);
-                            return {
-                                ...movie,
-                                content_score: rec.content_score,
-                                collab_score: rec.collab_score,
-                                final_score: rec.final_score
-                            };
-                        }
-                        console.warn('No matching movie found for recommendation:', rec.movieId);
-                        return null;
-                    }).filter(Boolean);
-                    
-                    if (fullRecommendations.length === 0) {
-                        recommendationsContainer.innerHTML = `
-                            <div class="col-12 text-center py-5">
-                                <p>No recommendation details available.</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    // Create movie cards for recommendations
-                    fullRecommendations.forEach(movie => {
-                        const movieCard = Utils.createMovieCard(movie, true);
-                        recommendationsContainer.appendChild(movieCard);
-                    });
-                });
+            const moviesToShow = recommendations.map(rec => ({
+                id: rec.movieId,
+                title: rec.title,
+                poster_path: rec.poster_path,
+                vote_average: rec.vote_average,
+                genres: rec.genres,
+                release_date: rec.release_date,
+                // include recommendation scores if needed
+                content_score: rec.content_score,
+                collab_score: rec.collab_score,
+                final_score: rec.final_score
+            }));
+            
+            moviesToShow.forEach(movie => {
+                const movieCard = Utils.createMovieCard(movie, true);
+                recommendationsContainer.appendChild(movieCard);
+            });
         })
         .catch(error => {
             console.error('Error loading recommendations:', error);
