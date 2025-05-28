@@ -147,7 +147,7 @@ function loadRecommendations(userId) {
                 let matchScore = rec._matchScore;
                 if (matchScore === null || matchScore <= 0) break;
                 allRecommendations.push({
-                    id: rec.movieId,
+                    id: rec.movieId !== undefined ? rec.movieId : rec.id,
                     title: rec.title,
                     poster_path: rec.poster_path,
                     vote_average: rec.vote_average,
@@ -165,7 +165,7 @@ function loadRecommendations(userId) {
             renderRecommendationsPage(currentPage);
         })
         .catch(error => {
-            console.error('Error loading recommendations:', error);
+            console.error('(Recommendations) Error loading recommendations:', error);
             recommendationsContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <div class="alert alert-danger" role="alert">
