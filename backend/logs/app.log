@@ -113,3 +113,33 @@
 2025-05-27 06:45:32,786 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
 2025-05-27 06:45:33,983 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
 2025-05-27 06:45:33,983 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:55:29,940 - app - INFO - Model loaded successfully
+2025-05-28 22:56:37,504 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:37,504 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:38,891 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:38,892 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:56,061 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:56,061 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:57,296 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:56:57,297 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:59:03,774 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:59:03,775 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:59:04,977 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 22:59:04,977 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:04:02,549 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:04:02,549 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:04:03,855 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:04:03,856 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:07:12,177 - app - INFO - Model loaded successfully
+2025-05-28 23:07:29,114 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:07:29,114 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:07:30,308 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:07:30,309 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:08:50,159 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:08:50,159 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:08:51,356 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:08:51,357 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:09:14,965 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:09:14,965 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:09:16,212 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-28 23:09:16,219 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
