@@ -23,10 +23,10 @@ class HybridRecommender(BaseRecommender):
         self.is_fitted = True
         logger.info("Hybrid model training completed")
 
-    def get_recommendations(self, user_id: int, n_recommendations: int = 10):
+    def get_recommendations(self, user_id: int, n_recommendations: int = 24):
         self._check_is_fitted()
-        # Get collaborative recommendations
-        collab_recs = self.collab_model.get_recommendations(user_id, n_recommendations * 2)
+        # Get collaborative recommendations (fetch a large number to ensure enough candidates)
+        collab_recs = self.collab_model.get_recommendations(user_id, 500)
         # For each recommended movie, get content score
         results = []
         for rec in collab_recs:
@@ -46,6 +46,30 @@ class HybridRecommender(BaseRecommender):
                 'content_score': content_score,
                 'collab_score': collab_score
             })
-        # Sort by final score
+        # Sort by final score (always sort full list)
         results = sorted(results, key=lambda x: x['final_score'], reverse=True)
+        # Normalize content_score and collab_score
+        if results:
+            content_scores = [r['content_score'] for r in results]
+            collab_scores = [r['collab_score'] for r in results]
+            min_content, max_content = min(content_scores), max(content_scores)
+            min_collab, max_collab = min(collab_scores), max(collab_scores)
+            for r in results:
+                if max_content > min_content:
+                    r['content_score'] = (r['content_score'] - min_content) / (max_content - min_content)
+                else:
+                    r['content_score'] = 0.0
+                if max_collab > min_collab:
+                    r['collab_score'] = (r['collab_score'] - min_collab) / (max_collab - min_collab)
+                else:
+                    r['collab_score'] = 0.0
+            # Normalize final_score
+            final_scores = [r['final_score'] for r in results]
+            min_final, max_final = min(final_scores), max(final_scores)
+            for r in results:
+                if max_final > min_final:
+                    r['final_score'] = (r['final_score'] - min_final) / (max_final - min_final)
+                else:
+                    r['final_score'] = 0.0
+        # Only apply limit at the end
         return results[:n_recommendations] 

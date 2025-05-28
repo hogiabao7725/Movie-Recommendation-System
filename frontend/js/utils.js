@@ -141,7 +141,23 @@ const Utils = {
         if (showRecommendationDetails && movie.content_score !== undefined) {
             const contentScorePercent = movie.content_score * 100;
             const collabScorePercent = movie.collab_score * 100;
-            
+            // Add weights if available
+            let weightsHtml = '';
+            if (movie.content_weight !== undefined && movie.collab_weight !== undefined) {
+                weightsHtml = `<div class="recommendation-weights">Weights: Content <strong>${(movie.content_weight * 100).toFixed(0)}%</strong> &middot; Collaborative <strong>${(movie.collab_weight * 100).toFixed(0)}%</strong></div>`;
+            }
+            // Calculate match score on the frontend for display accuracy
+            let matchScore = null;
+            if (
+                movie.content_score !== undefined &&
+                movie.collab_score !== undefined &&
+                movie.content_weight !== undefined &&
+                movie.collab_weight !== undefined
+            ) {
+                matchScore = (movie.content_score * movie.content_weight + movie.collab_score * movie.collab_weight) * 100;
+            } else if (movie.final_score !== undefined) {
+                matchScore = movie.final_score * 100;
+            }
             cardContent += `
                 <div class="mt-auto">
                     <hr>
@@ -149,12 +165,13 @@ const Utils = {
                         <span>Content: ${contentScorePercent.toFixed(0)}%</span>
                         <span>Collaborative: ${collabScorePercent.toFixed(0)}%</span>
                     </div>
+                    ${weightsHtml}
                     <div class="score-bar">
                         <div class="content-score-bar" style="width: ${contentScorePercent}%"></div>
                         <div class="collab-score-bar" style="width: ${collabScorePercent}%"></div>
                     </div>
                     <div class="text-center mt-2">
-                        <strong>Match Score: ${(movie.final_score * 100).toFixed(0)}%</strong>
+                        <strong>Match Score: ${matchScore !== null ? matchScore.toFixed(0) : 'N/A'}%</strong>
                     </div>
                 </div>
             `;

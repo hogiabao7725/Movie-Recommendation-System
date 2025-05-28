@@ -38,16 +38,68 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-/**
- * Load personalized recommendations for a user
- * @param {number} userId - The user ID to get recommendations for
- */
+let allRecommendations = [];
+let currentPage = 1;
+const MOVIES_PER_PAGE = 8;
+const MAX_PAGES = 3;
+let isLoading = false;
+
+function renderRecommendationsPage(page) {
+    const recommendationsContainer = document.getElementById('recommendation-list');
+    recommendationsContainer.innerHTML = '';
+    const startIdx = (page - 1) * MOVIES_PER_PAGE;
+    const endIdx = startIdx + MOVIES_PER_PAGE;
+    const moviesToShow = allRecommendations.slice(startIdx, endIdx);
+    // 4x2 grid: 4 movies per row
+    for (let row = 0; row < 2; row++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'row g-4 mb-2';
+        for (let col = 0; col < 4; col++) {
+            const movieIdx = row * 4 + col;
+            if (movieIdx < moviesToShow.length) {
+                const movieCard = Utils.createMovieCard(moviesToShow[movieIdx], true);
+                rowDiv.appendChild(movieCard);
+            }
+        }
+        recommendationsContainer.appendChild(rowDiv);
+    }
+    renderPaginationControls();
+}
+
+function renderPaginationControls() {
+    const recommendationsContainer = document.getElementById('recommendation-list');
+    let pagination = document.getElementById('recommendation-pagination');
+    if (!pagination) {
+        pagination = document.createElement('div');
+        pagination.id = 'recommendation-pagination';
+        pagination.className = 'd-flex justify-content-center my-4';
+        recommendationsContainer.parentNode.appendChild(pagination);
+    }
+    let totalPages = Math.ceil(allRecommendations.length / MOVIES_PER_PAGE);
+    if (totalPages > MAX_PAGES) totalPages = MAX_PAGES;
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="btn btn-sm ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'} mx-1" data-page="${i}">${i}</button>`;
+    }
+    pagination.innerHTML = html;
+    Array.from(pagination.querySelectorAll('button')).forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentPage = parseInt(this.getAttribute('data-page'));
+            renderRecommendationsPage(currentPage);
+        });
+    });
+}
+
 function loadRecommendations(userId) {
     const recommendationsContainer = document.getElementById('recommendation-list');
-    
     if (!recommendationsContainer) return;
     
-    // Show loading spinner
+    // Prevent duplicate loading
+    if (isLoading) {
+        return;
+    }
+    
+    isLoading = true;
     recommendationsContainer.innerHTML = `
         <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -55,12 +107,11 @@ function loadRecommendations(userId) {
             </div>
         </div>
     `;
-      console.log('Loading recommendations for user ID:', userId);
-    ApiService.getRecommendations(userId)
+    
+    // Request up to 24 recommendations from the API
+    ApiService.getRecommendations(userId, MOVIES_PER_PAGE * MAX_PAGES)
         .then(recommendations => {
-            console.log('Received recommendations:', recommendations);
             recommendationsContainer.innerHTML = '';
-            
             if (!recommendations || recommendations.length === 0) {
                 recommendationsContainer.innerHTML = `
                     <div class="col-12 text-center py-5">
@@ -70,24 +121,48 @@ function loadRecommendations(userId) {
                 return;
             }
             
-            // Get movie details for recommended movies
-            const moviesToShow = recommendations.map(rec => ({
-                id: rec.movieId,
-                title: rec.title,
-                poster_path: rec.poster_path,
-                vote_average: rec.vote_average,
-                genres: rec.genres,
-                release_date: rec.release_date,
-                // include recommendation scores if needed
-                content_score: rec.content_score,
-                collab_score: rec.collab_score,
-                final_score: rec.final_score
-            }));
-            
-            moviesToShow.forEach(movie => {
-                const movieCard = Utils.createMovieCard(movie, true);
-                recommendationsContainer.appendChild(movieCard);
+            // Calculate match score for sorting
+            recommendations.forEach(rec => {
+                if (
+                    rec.content_score !== undefined &&
+                    rec.collab_score !== undefined &&
+                    rec.content_weight !== undefined &&
+                    rec.collab_weight !== undefined
+                ) {
+                    rec._matchScore = rec.content_score * rec.content_weight + rec.collab_score * rec.collab_weight;
+                } else if (rec.final_score !== undefined) {
+                    rec._matchScore = rec.final_score;
+                } else {
+                    rec._matchScore = -Infinity;
+                }
             });
+            // Sort by match score descending
+            recommendations.sort((a, b) => b._matchScore - a._matchScore);
+            
+            // Filter recommendations:
+            allRecommendations = [];
+            const MAX_TOTAL_MOVIES = MOVIES_PER_PAGE * MAX_PAGES; // 24 movies total
+            for (let i = 0; i < recommendations.length; i++) {
+                const rec = recommendations[i];
+                let matchScore = rec._matchScore;
+                if (matchScore === null || matchScore <= 0) break;
+                allRecommendations.push({
+                    id: rec.movieId,
+                    title: rec.title,
+                    poster_path: rec.poster_path,
+                    vote_average: rec.vote_average,
+                    genres: rec.genres,
+                    release_date: rec.release_date,
+                    content_score: rec.content_score,
+                    collab_score: rec.collab_score,
+                    final_score: rec.final_score,
+                    content_weight: rec.content_weight,
+                    collab_weight: rec.collab_weight
+                });
+                if (allRecommendations.length >= MAX_TOTAL_MOVIES) break;
+            }
+            currentPage = 1;
+            renderRecommendationsPage(currentPage);
         })
         .catch(error => {
             console.error('Error loading recommendations:', error);
@@ -98,5 +173,8 @@ function loadRecommendations(userId) {
                     </div>
                 </div>
             `;
+        })
+        .finally(() => {
+            isLoading = false;
         });
 }

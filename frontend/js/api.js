@@ -10,15 +10,22 @@ console.log('API service initialized');
 const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
 
 // API Service object
-const ApiService = {
-    /**
+const ApiService = {    /**
      * Get popular movies
      * @param {number} page - Page number for pagination
+     * @param {number} limit - Optional limit for number of results
      * @returns {Promise} - Promise with movie data
      */
-    getPopularMovies: function(page = 1) {
-        console.log(`Fetching popular movies from: ${API_BASE_URL}/movies/popular?page=${page}`);
-        return fetch(`${API_BASE_URL}/movies/popular?page=${page}`)
+    getPopularMovies: function(page = 1, limit = null) {
+        let url = `${API_BASE_URL}/movies/popular?page=${page}`;
+        
+        // Add limit parameter if provided
+        if (limit) {
+            url += `&limit=${limit}`;
+        }
+        
+        console.log(`Fetching popular movies from: ${url}`);
+        return fetch(url)
             .then(response => {
                 console.log('Popular movies response:', response);
                 if (!response.ok) {
@@ -30,16 +37,22 @@ const ApiService = {
                 console.error('Error fetching popular movies:', error);
                 throw error;
             });
-    },
-
-    /**
+    },    /**
      * Search movies by query
      * @param {string} query - Search query
      * @param {number} page - Page number for pagination
+     * @param {number} limit - Optional limit for number of results
      * @returns {Promise} - Promise with search results
      */
-    searchMovies: function(query, page = 1) {
-        return fetch(`${API_BASE_URL}/movies/search?query=${encodeURIComponent(query)}&page=${page}`)
+    searchMovies: function(query, page = 1, limit = null) {
+        let url = `${API_BASE_URL}/movies/search?query=${encodeURIComponent(query)}&page=${page}`;
+        
+        // Add limit parameter if provided
+        if (limit) {
+            url += `&limit=${limit}`;
+        }
+        
+        return fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -91,18 +104,16 @@ const ApiService = {
                 }
                 return response.json();
             });
-    },
-
-    /**
+    },    /**
      * Get personalized movie recommendations for a user
      * @param {number} userId - User ID
-     * @param {number} count - Number of recommendations to get
+     * @param {number} limit - Number of recommendations to get
      * @returns {Promise} - Promise with recommended movies
      */
-    getRecommendations: function(userId, count = 10) {
-        console.log(`Fetching recommendations for user ${userId}, count: ${count}`);
-        console.log(`Using URL: ${API_BASE_URL}/recommendations`);
+    getRecommendations: function(userId, limit = 10) {
+        console.log(`Fetching recommendations for user ${userId}, limit: ${limit}`);
         
+        // Use the same parameter naming for consistency with other API calls
         return fetch(`${API_BASE_URL}/recommendations`, {
             method: 'POST',
             headers: {
@@ -110,11 +121,10 @@ const ApiService = {
             },
             body: JSON.stringify({
                 user_id: userId,
-                n_recommendations: count
+                limit: limit // Renamed for consistency with other API endpoints
             })
         })
         .then(response => {
-            console.log('Recommendations response:', response);
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
             }

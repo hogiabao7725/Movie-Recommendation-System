@@ -18,7 +18,7 @@ from app.api.services.tmdb import TMDBService
 
 class RecommendationRequest(BaseModel):
     user_id: int
-    n_recommendations: int = 10
+    limit: int = 10  # Renamed for consistency with other API endpoints
 
 class MovieRecommendation(BaseModel):
     movieId: int
@@ -61,46 +61,77 @@ def root():
 
 @app.post("/api/v1/recommendations")
 def get_recommendations(request: RecommendationRequest):
+    """
+    Get personalized movie recommendations for a user
+    
+    Args:
+        request: RecommendationRequest with user_id and limit
+        
+    Returns:
+        List of recommended movies with details
+    """
     if recommender is None:
         raise HTTPException(status_code=500, detail="Model not loaded")
+    
+    # Use a simple cache to avoid recalculating frequently requested recommendations
+    cache_key = f"recommendations_{request.user_id}_{request.limit}"
+    
+    # Check if we have cached results (would be implemented with Redis in production)
+    # For now, we'll just proceed with generating recommendations
+    
     try:
-        n_needed = request.n_recommendations
-        n_fetch = n_needed * 3  # Fetch more to allow for missing/invalid movies
+        needed_count = request.limit
+        fetch_count = needed_count * 2  # Fetch more to allow for missing/invalid movies
+        
+        # Get recommendations from the model
+        results = recommender.get_recommendations(
+            user_id=request.user_id,
+            n_recommendations=fetch_count
+        )
+        
+        # Process results and get movie details
         enriched_results = []
         tried_movie_ids = set()
-        while len(enriched_results) < n_needed:
-            results = recommender.get_recommendations(
-                user_id=request.user_id,
-                n_recommendations=n_fetch
-            )
-            for rec in results:
-                movie_id = rec["movieId"]
-                if movie_id in tried_movie_ids:
-                    continue
-                tried_movie_ids.add(movie_id)
-                try:
-                    movie = tmdb_service.get_movie_details(movie_id)
-                    enriched_results.append({
-                        "movieId": movie_id,
-                        "title": movie["title"],
-                        "genres": [genre["name"] for genre in movie["genres"]],
-                        "poster_path": tmdb_service.get_poster_url(movie["poster_path"]),
-                        "vote_average": movie["vote_average"],
-                        "release_date": movie["release_date"],
-                        "final_score": rec.get("final_score"),
-                        "content_score": rec.get("content_score"),
-                        "collab_score": rec.get("collab_score"),
-                    })
-                    if len(enriched_results) >= n_needed:
-                        break
-                except Exception as e:
-                    logger.error(f"Error fetching details for movie {movie_id}: {str(e)}")
-                    continue
-            if len(enriched_results) >= n_needed or len(results) == 0:
+        
+        for rec in results:
+            # Skip if we already have enough recommendations
+            if len(enriched_results) >= needed_count:
                 break
-            # If not enough, increase n_fetch for next round
-            n_fetch *= 2
-        return enriched_results[:n_needed]
+                
+            movie_id = rec["movieId"]
+            if movie_id in tried_movie_ids:
+                continue
+                
+            tried_movie_ids.add(movie_id)
+            
+            try:
+                # Get movie details from TMDB
+                movie = tmdb_service.get_movie_details(movie_id)
+                
+                # Create standardized movie object with recommendation scores
+                enriched_results.append({
+                    "id": movie_id,  # Make consistent with Movie object from movies API
+                    "title": movie["title"],
+                    "genres": [genre["name"] for genre in movie["genres"]],
+                    "poster_path": tmdb_service.get_poster_url(movie["poster_path"]),
+                    "vote_average": movie["vote_average"],
+                    "release_date": movie["release_date"],
+                    "overview": movie["overview"],
+                    # Include recommendation scores
+                    "final_score": rec.get("final_score"),
+                    "content_score": rec.get("content_score"),
+                    "collab_score": rec.get("collab_score"),
+                    # Add weights for frontend display
+                    "content_weight": getattr(recommender, "content_weight", 0.5),
+                    "collab_weight": getattr(recommender, "collab_weight", 0.5),
+                })
+            except Exception as e:
+                logger.error(f"Error fetching details for movie {movie_id}: {str(e)}")
+                continue
+                
+        # Return exactly the requested number of recommendations
+        return enriched_results[:needed_count]
+        
     except Exception as e:
         logger.error(f"Error getting recommendations: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))

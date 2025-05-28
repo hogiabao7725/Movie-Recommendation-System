@@ -77,9 +77,39 @@ class TMDBService:
         except Exception as e:
             logger.error(f"Error fetching movie videos: {str(e)}")
             raise
-    
     def get_poster_url(self, poster_path: str, size: str = "w500") -> str:
         """Get full poster URL"""
         if not poster_path:
             return None
-        return f"{self.image_base_url}/{size}{poster_path}" 
+        return f"{self.image_base_url}/{size}{poster_path}"
+            
+    def get_genre_names_from_ids(self, genre_ids: List[int]) -> List[str]:
+        """
+        Convert genre IDs to genre names using a local mapping
+        This avoids making an extra API call for genre information
+        """
+        # Static mapping of genre IDs to names from TMDB
+        # This could be fetched once from TMDB API and cached
+        genre_map = {
+            28: "Action",
+            12: "Adventure",
+            16: "Animation",
+            35: "Comedy",
+            80: "Crime",
+            99: "Documentary",
+            18: "Drama",
+            10751: "Family",
+            14: "Fantasy",
+            36: "History",
+            27: "Horror",
+            10402: "Music",
+            9648: "Mystery",
+            10749: "Romance",
+            878: "Science Fiction",
+            10770: "TV Movie",
+            53: "Thriller",
+            10752: "War",
+            37: "Western"
+        }
+        
+        return [genre_map.get(genre_id, "Unknown") for genre_id in genre_ids]
