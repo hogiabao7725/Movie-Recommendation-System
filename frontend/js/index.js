@@ -102,6 +102,24 @@ function loadRecommendationsPreview(userId) {
                 return;
             }
             
+            // Calculate match score for sorting
+            recommendations.forEach(rec => {
+                if (
+                    rec.content_score !== undefined &&
+                    rec.collab_score !== undefined &&
+                    rec.content_weight !== undefined &&
+                    rec.collab_weight !== undefined
+                ) {
+                    rec._matchScore = rec.content_score * rec.content_weight + rec.collab_score * rec.collab_weight;
+                } else if (rec.final_score !== undefined) {
+                    rec._matchScore = rec.final_score;
+                } else {
+                    rec._matchScore = -Infinity;
+                }
+            });
+            // Sort by match score descending
+            recommendations.sort((a, b) => b._matchScore - a._matchScore);
+            
             // Create movie cards directly from the response
             // This assumes the backend returns standardized movie objects
             recommendations.forEach(movie => {
