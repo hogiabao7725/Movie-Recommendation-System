@@ -285,3 +285,132 @@
 2025-05-29 01:51:14,567 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
 2025-05-29 01:51:14,568 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
 2025-05-29 01:51:18,573 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:25:35,737 - app - INFO - Model loaded successfully
+2025-05-29 02:25:37,533 - app - INFO - Cache miss for popular_movies_page1_limit4, fetching fresh data
+2025-05-29 02:25:39,598 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:39,599 - app - ERROR - Error fetching details for movie 1275: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:40,914 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:40,914 - app - ERROR - Error fetching details for movie 1214: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:42,204 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:42,204 - app - ERROR - Error fetching details for movie 3702: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:51,646 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:25:54,767 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:25:55,563 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:55,564 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:56,861 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:25:56,862 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:07,236 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:26:08,034 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:08,034 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:09,297 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:09,298 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:10,091 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:26:25,396 - app - INFO - Model loaded successfully
+2025-05-29 02:26:28,783 - app - INFO - Cache miss for popular_movies_page1_limit4, fetching fresh data
+2025-05-29 02:26:30,078 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:30,078 - app - ERROR - Error fetching details for movie 1275: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:31,405 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:31,406 - app - ERROR - Error fetching details for movie 1214: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:32,704 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:26:32,704 - app - ERROR - Error fetching details for movie 3702: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:27:21,760 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:27:23,198 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:27:23,199 - app - ERROR - Error fetching details for movie 1275: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:27:24,467 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:27:24,468 - app - ERROR - Error fetching details for movie 1214: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:27:25,776 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:27:25,776 - app - ERROR - Error fetching details for movie 3702: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:29:39,001 - app - INFO - Model loaded successfully
+2025-05-29 02:29:57,052 - app - INFO - Cache miss for popular_movies_page1_limit4, fetching fresh data
+2025-05-29 02:29:59,091 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:29:59,092 - app - ERROR - Error fetching details for movie 1275: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1275?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:00,349 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:00,349 - app - ERROR - Error fetching details for movie 1214: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1214?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:01,760 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:01,761 - app - ERROR - Error fetching details for movie 3702: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/3702?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:22,867 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:30:25,663 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:30:26,422 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:26,422 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:27,679 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:30:27,680 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:31:49,975 - app - INFO - Model loaded successfully
+2025-05-29 02:31:58,136 - app - INFO - Cache miss for popular_movies_page1_limit4, fetching fresh data
+2025-05-29 02:31:58,920 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:31:58,922 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:32:00,226 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:32:00,226 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:32:05,977 - app - INFO - Cache miss for movie_details_260, fetching fresh data
+2025-05-29 02:32:06,570 - app - INFO - Cache miss for movie_videos_260, fetching fresh data
+2025-05-29 02:32:07,184 - app - INFO - Cache miss for movie_credits_260, fetching fresh data
+2025-05-29 02:32:13,102 - app - INFO - Cache miss for movie_videos_2028, fetching fresh data
+2025-05-29 02:32:13,818 - app - INFO - Cache miss for movie_details_2028, fetching fresh data
+2025-05-29 02:32:14,399 - app - INFO - Cache miss for movie_credits_2028, fetching fresh data
+2025-05-29 02:32:19,529 - app - INFO - Cache miss for movie_details_1089, fetching fresh data
+2025-05-29 02:32:20,169 - app - INFO - Cache miss for movie_videos_1089, fetching fresh data
+2025-05-29 02:32:20,756 - app - INFO - Cache miss for movie_credits_1089, fetching fresh data
+2025-05-29 02:33:21,808 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:33:22,600 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:22,601 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:23,873 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:23,873 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:35,570 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:33:36,268 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:36,268 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:37,557 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:37,557 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:37,573 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:33:38,199 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:38,200 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:39,390 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:33:39,391 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:03,294 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:35:04,070 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:04,070 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:04,664 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:35:05,311 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:05,312 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:05,381 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:05,382 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:06,489 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:06,490 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:35:57,617 - app - INFO - Model loaded successfully
+2025-05-29 02:36:00,206 - app - INFO - Cache miss for popular_movies_page1_limit4, fetching fresh data
+2025-05-29 02:36:01,008 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:36:01,009 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:36:02,257 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:36:02,258 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:36:39,037 - app - INFO - Cache miss for movie_details_2028, fetching fresh data
+2025-05-29 02:36:39,665 - app - INFO - Cache miss for movie_videos_2028, fetching fresh data
+2025-05-29 02:36:40,253 - app - INFO - Cache miss for movie_credits_2028, fetching fresh data
+2025-05-29 02:37:19,359 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:37:20,172 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:20,173 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:21,142 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:37:21,439 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:21,439 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:21,786 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:21,786 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:22,944 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:37:22,944 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:34,919 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:38:35,750 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:35,752 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:37,012 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:37,013 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:38,139 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:38:38,841 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:38,841 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:40,094 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:40,094 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:38:49,701 - app - INFO - Cache miss for movie_details_260, fetching fresh data
+2025-05-29 02:38:50,283 - app - INFO - Cache miss for movie_credits_260, fetching fresh data
+2025-05-29 02:38:50,916 - app - INFO - Cache miss for movie_videos_260, fetching fresh data
+2025-05-29 02:39:08,681 - app - INFO - Cache hit for movie_details_260
+2025-05-29 02:39:08,682 - app - INFO - Cache hit for movie_credits_260
+2025-05-29 02:39:08,684 - app - INFO - Cache hit for movie_videos_260
+2025-05-29 02:39:21,197 - app - INFO - Cache hit for popular_movies_page1_limit4
+2025-05-29 02:39:21,911 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:39:21,911 - app - ERROR - Error fetching details for movie 1222: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1222?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:39:23,198 - app - ERROR - Error fetching movie details: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9
+2025-05-29 02:39:23,198 - app - ERROR - Error fetching details for movie 1210: 404 Client Error: Not Found for url: https://api.themoviedb.org/3/movie/1210?api_key=1ebacda1e1b48b62f50e8e9db7abfcd9

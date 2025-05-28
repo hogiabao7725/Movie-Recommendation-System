@@ -48,4 +48,27 @@ class HybridRecommender(BaseRecommender):
             })
         # Sort by final score
         results = sorted(results, key=lambda x: x['final_score'], reverse=True)
+        # Normalize content_score and collab_score
+        if results:
+            content_scores = [r['content_score'] for r in results]
+            collab_scores = [r['collab_score'] for r in results]
+            min_content, max_content = min(content_scores), max(content_scores)
+            min_collab, max_collab = min(collab_scores), max(collab_scores)
+            for r in results:
+                if max_content > min_content:
+                    r['content_score'] = (r['content_score'] - min_content) / (max_content - min_content)
+                else:
+                    r['content_score'] = 0.0
+                if max_collab > min_collab:
+                    r['collab_score'] = (r['collab_score'] - min_collab) / (max_collab - min_collab)
+                else:
+                    r['collab_score'] = 0.0
+            # Normalize final_score
+            final_scores = [r['final_score'] for r in results]
+            min_final, max_final = min(final_scores), max(final_scores)
+            for r in results:
+                if max_final > min_final:
+                    r['final_score'] = (r['final_score'] - min_final) / (max_final - min_final)
+                else:
+                    r['final_score'] = 0.0
         return results[:n_recommendations] 

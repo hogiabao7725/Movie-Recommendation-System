@@ -120,7 +120,11 @@ def get_recommendations(request: RecommendationRequest):
                     # Include recommendation scores
                     "final_score": rec.get("final_score"),
                     "content_score": rec.get("content_score"),
-                    "collab_score": rec.get("collab_score"),                })
+                    "collab_score": rec.get("collab_score"),
+                    # Add weights for frontend display
+                    "content_weight": getattr(recommender, "content_weight", 0.5),
+                    "collab_weight": getattr(recommender, "collab_weight", 0.5),
+                })
             except Exception as e:
                 logger.error(f"Error fetching details for movie {movie_id}: {str(e)}")
                 continue
