@@ -42,6 +42,7 @@ let allRecommendations = [];
 let currentPage = 1;
 const MOVIES_PER_PAGE = 8;
 const MAX_PAGES = 3;
+let isLoading = false;
 
 function renderRecommendationsPage(page) {
     const recommendationsContainer = document.getElementById('recommendation-list');
@@ -92,6 +93,13 @@ function renderPaginationControls() {
 function loadRecommendations(userId) {
     const recommendationsContainer = document.getElementById('recommendation-list');
     if (!recommendationsContainer) return;
+    
+    // Prevent duplicate loading
+    if (isLoading) {
+        return;
+    }
+    
+    isLoading = true;
     recommendationsContainer.innerHTML = `
         <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -99,6 +107,7 @@ function loadRecommendations(userId) {
             </div>
         </div>
     `;
+    
     // Request up to 24 recommendations from the API
     ApiService.getRecommendations(userId, MOVIES_PER_PAGE * MAX_PAGES)
         .then(recommendations => {
@@ -164,5 +173,8 @@ function loadRecommendations(userId) {
                     </div>
                 </div>
             `;
+        })
+        .finally(() => {
+            isLoading = false;
         });
 }
