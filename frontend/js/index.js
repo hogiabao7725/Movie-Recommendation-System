@@ -88,51 +88,23 @@ function loadRecommendationsPreview(userId) {
             }
             
             // Get movie details for recommended movies
-            const movieIds = recommendations.map(rec => rec.movieId);
-            console.log('Getting movie details for IDs:', movieIds);
+            const moviesToShow = recommendations.map(rec => ({
+                id: rec.movieId,
+                title: rec.title,
+                poster_path: rec.poster_path,
+                vote_average: rec.vote_average,
+                genres: rec.genres,
+                release_date: rec.release_date,
+                // include recommendation scores if needed
+                content_score: rec.content_score,
+                collab_score: rec.collab_score,
+                final_score: rec.final_score
+            }));
             
-            ApiService.getMultipleMovies(movieIds)
-                .then(movieDetails => {
-                    console.log('Movie details received:', movieDetails);
-                    // Combine recommendation data with movie details
-                    const fullRecommendations = recommendations.map(rec => {
-                        const movie = movieDetails.find(m => m.id === rec.movieId);
-                        if (movie) {
-                            return {
-                                ...movie,
-                                content_score: rec.content_score,
-                                collab_score: rec.collab_score,
-                                final_score: rec.final_score
-                            };
-                        }
-                        return null;
-                    }).filter(Boolean);
-                    
-                    if (fullRecommendations.length === 0) {
-                        recommendationsContainer.innerHTML = `
-                            <div class="col-12 text-center py-5">
-                                <p>No recommendation details available.</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    // Create movie cards for recommendations
-                    fullRecommendations.forEach(movie => {
-                        const movieCard = Utils.createMovieCard(movie, true);
-                        recommendationsContainer.appendChild(movieCard);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading movie details for recommendations:', error);
-                    recommendationsContainer.innerHTML = `
-                        <div class="col-12 text-center py-5">
-                            <div class="alert alert-danger" role="alert">
-                                Failed to load recommendation details. Please try again later.
-                            </div>
-                        </div>
-                    `;
-                });
+            moviesToShow.forEach(movie => {
+                const movieCard = Utils.createMovieCard(movie, true);
+                recommendationsContainer.appendChild(movieCard);
+            });
         })
         .catch(error => {
             console.error('Error loading recommendations:', error);
