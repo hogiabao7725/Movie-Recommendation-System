@@ -16,11 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Load popular movies and display them on the homepage
+ * This function fetches popular movies from the API
+ * and displays them in the popular movies container.
+ * It shows exactly 4 movies for the homepage preview.
  */
 function loadPopularMovies() {
     const popularMoviesContainer = document.getElementById('popular-movies');
     
     if (!popularMoviesContainer) return;
+    
+    // Show loading spinner while fetching data
+    popularMoviesContainer.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    `;
     
     // Request exactly 4 movies directly from API
     ApiService.getPopularMovies(1, 4)
@@ -56,6 +68,10 @@ function loadPopularMovies() {
 
 /**
  * Load recommendation preview for the homepage
+ * This function fetches personalized movie recommendations for a user
+ * and displays them in the recommendations container.
+ * It shows exactly 4 movies and includes their recommendation scores.
+ * 
  * @param {number} userId - The user ID to get recommendations for
  */
 function loadRecommendationsPreview(userId) {
@@ -63,6 +79,7 @@ function loadRecommendationsPreview(userId) {
     
     if (!recommendationsContainer) return;
     
+    // Show loading spinner while fetching data
     recommendationsContainer.innerHTML = `
         <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -70,10 +87,10 @@ function loadRecommendationsPreview(userId) {
             </div>
         </div>
     `;
-      console.log('Requesting recommendations for user:', userId);
+    
+    // Request exactly 4 recommendations directly from API
     ApiService.getRecommendations(userId, 4)
         .then(recommendations => {
-            console.log('Recommendations received:', recommendations);
             recommendationsContainer.innerHTML = '';
             
             if (!recommendations || recommendations.length === 0) {
@@ -85,21 +102,10 @@ function loadRecommendationsPreview(userId) {
                 return;
             }
             
-            // Get movie details for recommended movies
-            const moviesToShow = recommendations.map(rec => ({
-                id: rec.movieId,
-                title: rec.title,
-                poster_path: rec.poster_path,
-                vote_average: rec.vote_average,
-                genres: rec.genres,
-                release_date: rec.release_date,
-                // include recommendation scores if needed
-                content_score: rec.content_score,
-                collab_score: rec.collab_score,
-                final_score: rec.final_score
-            }));
-            
-            moviesToShow.forEach(movie => {
+            // Create movie cards directly from the response
+            // This assumes the backend returns standardized movie objects
+            recommendations.forEach(movie => {
+                // Include showScore=true to display recommendation scores
                 const movieCard = Utils.createMovieCard(movie, true);
                 recommendationsContainer.appendChild(movieCard);
             });

@@ -104,18 +104,16 @@ const ApiService = {    /**
                 }
                 return response.json();
             });
-    },
-
-    /**
+    },    /**
      * Get personalized movie recommendations for a user
      * @param {number} userId - User ID
-     * @param {number} count - Number of recommendations to get
+     * @param {number} limit - Number of recommendations to get
      * @returns {Promise} - Promise with recommended movies
      */
-    getRecommendations: function(userId, count = 10) {
-        console.log(`Fetching recommendations for user ${userId}, count: ${count}`);
-        console.log(`Using URL: ${API_BASE_URL}/recommendations`);
+    getRecommendations: function(userId, limit = 10) {
+        console.log(`Fetching recommendations for user ${userId}, limit: ${limit}`);
         
+        // Use the same parameter naming for consistency with other API calls
         return fetch(`${API_BASE_URL}/recommendations`, {
             method: 'POST',
             headers: {
@@ -123,11 +121,10 @@ const ApiService = {    /**
             },
             body: JSON.stringify({
                 user_id: userId,
-                n_recommendations: count
+                limit: limit // Renamed for consistency with other API endpoints
             })
         })
         .then(response => {
-            console.log('Recommendations response:', response);
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
             }
