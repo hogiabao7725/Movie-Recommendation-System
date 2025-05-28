@@ -55,7 +55,7 @@ function loadPopularMovies() {
             });
         })
         .catch(error => {
-            console.error('Error loading popular movies:', error);
+            console.error('(Home) Error loading popular movies:', error);
             popularMoviesContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <div class="alert alert-danger" role="alert">
@@ -65,6 +65,12 @@ function loadPopularMovies() {
             `;
         });
 }
+
+// Cache key and cache duration (5 minutes)
+const RECOMMENDATION_CACHE_KEY = 'home_recommendations_cache';
+const RECOMMENDATION_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in ms
+// Store the current AbortController globally for this page
+let currentRecommendationAbortController = null;
 
 /**
  * Load recommendation preview for the homepage
@@ -76,10 +82,30 @@ function loadPopularMovies() {
  */
 function loadRecommendationsPreview(userId) {
     const recommendationsContainer = document.getElementById('recommendations-preview');
-    
     if (!recommendationsContainer) return;
-    
-    // Show loading spinner while fetching data
+
+    // Check cache
+    const cacheRaw = localStorage.getItem(RECOMMENDATION_CACHE_KEY);
+    let cache = null;
+    if (cacheRaw) {
+        try {
+            cache = JSON.parse(cacheRaw);
+        } catch (e) { cache = null; }
+    }
+    const now = Date.now();
+    if (cache && cache.userId === userId && (now - cache.timestamp < RECOMMENDATION_CACHE_DURATION)) {
+        // Use cached data if valid
+        renderRecommendationsPreview(cache.data, recommendationsContainer);
+        return;
+    }
+
+    // Abort previous request if still running
+    if (currentRecommendationAbortController) {
+        currentRecommendationAbortController.abort();
+    }
+    currentRecommendationAbortController = new AbortController();
+
+    // Show loading spinner
     recommendationsContainer.innerHTML = `
         <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -87,49 +113,23 @@ function loadRecommendationsPreview(userId) {
             </div>
         </div>
     `;
-    
-    // Request exactly 4 recommendations directly from API
-    ApiService.getRecommendations(userId, 4)
+
+    // Fetch recommendations with abort support
+    ApiService.getRecommendations(userId, 4, currentRecommendationAbortController.signal)
         .then(recommendations => {
-            recommendationsContainer.innerHTML = '';
-            
-            if (!recommendations || recommendations.length === 0) {
-                recommendationsContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <p>No recommendations found for your profile.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Calculate match score for sorting
-            recommendations.forEach(rec => {
-                if (
-                    rec.content_score !== undefined &&
-                    rec.collab_score !== undefined &&
-                    rec.content_weight !== undefined &&
-                    rec.collab_weight !== undefined
-                ) {
-                    rec._matchScore = rec.content_score * rec.content_weight + rec.collab_score * rec.collab_weight;
-                } else if (rec.final_score !== undefined) {
-                    rec._matchScore = rec.final_score;
-                } else {
-                    rec._matchScore = -Infinity;
-                }
-            });
-            // Sort by match score descending
-            recommendations.sort((a, b) => b._matchScore - a._matchScore);
-            
-            // Create movie cards directly from the response
-            // This assumes the backend returns standardized movie objects
-            recommendations.forEach(movie => {
-                // Include showScore=true to display recommendation scores
-                const movieCard = Utils.createMovieCard(movie, true);
-                recommendationsContainer.appendChild(movieCard);
-            });
+            // If aborted, do nothing
+            if (!recommendations) return;
+            // Save to cache
+            localStorage.setItem(RECOMMENDATION_CACHE_KEY, JSON.stringify({
+                userId: userId,
+                data: recommendations,
+                timestamp: Date.now()
+            }));
+            renderRecommendationsPreview(recommendations, recommendationsContainer);
         })
         .catch(error => {
-            console.error('Error loading recommendations:', error);
+            if (error && error.name === 'AbortError') return; // Ignore abort errors
+            console.error('(Home) Error loading recommendations:', error);
             recommendationsContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <div class="alert alert-danger" role="alert">
@@ -138,4 +138,39 @@ function loadRecommendationsPreview(userId) {
                 </div>
             `;
         });
+}
+
+// Helper to render recommendations (same as before)
+function renderRecommendationsPreview(recommendations, container) {
+    container.innerHTML = '';
+    if (!recommendations || recommendations.length === 0) {
+        container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <p>No recommendations found for your profile.</p>
+            </div>
+        `;
+        return;
+    }
+    // Calculate match score for sorting
+    recommendations.forEach(rec => {
+        if (
+            rec.content_score !== undefined &&
+            rec.collab_score !== undefined &&
+            rec.content_weight !== undefined &&
+            rec.collab_weight !== undefined
+        ) {
+            rec._matchScore = rec.content_score * rec.content_weight + rec.collab_score * rec.collab_weight;
+        } else if (rec.final_score !== undefined) {
+            rec._matchScore = rec.final_score;
+        } else {
+            rec._matchScore = -Infinity;
+        }
+    });
+    // Sort by match score descending
+    recommendations.sort((a, b) => b._matchScore - a._matchScore);
+    // Create movie cards
+    recommendations.forEach(movie => {
+        const movieCard = Utils.createMovieCard(movie, true);
+        container.appendChild(movieCard);
+    });
 }

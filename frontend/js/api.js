@@ -110,9 +110,8 @@ const ApiService = {    /**
      * @param {number} limit - Number of recommendations to get
      * @returns {Promise} - Promise with recommended movies
      */
-    getRecommendations: function(userId, limit = 10) {
+    getRecommendations: function(userId, limit = 10, signal = undefined) {
         console.log(`Fetching recommendations for user ${userId}, limit: ${limit}`);
-        
         // Use the same parameter naming for consistency with other API calls
         return fetch(`${API_BASE_URL}/recommendations`, {
             method: 'POST',
@@ -122,7 +121,8 @@ const ApiService = {    /**
             body: JSON.stringify({
                 user_id: userId,
                 limit: limit // Renamed for consistency with other API endpoints
-            })
+            }),
+            signal // Pass the abort signal here
         })
         .then(response => {
             if (!response.ok) {
@@ -131,6 +131,10 @@ const ApiService = {    /**
             return response.json();
         })
         .catch(error => {
+            if (error.name === 'AbortError') {
+                // Request was aborted, just return
+                return;
+            }
             console.error('Error fetching recommendations:', error);
             throw error;
         });
