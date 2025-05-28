@@ -22,14 +22,12 @@ function loadPopularMovies() {
     
     if (!popularMoviesContainer) return;
     
-    ApiService.getPopularMovies(1)
+    // Request exactly 4 movies directly from API
+    ApiService.getPopularMovies(1, 4)
         .then(movies => {
-            // Show only first 4 movies on homepage
-            const moviesToShow = movies.slice(0, 4);
-            
             popularMoviesContainer.innerHTML = '';
             
-            if (moviesToShow.length === 0) {
+            if (movies.length === 0) {
                 popularMoviesContainer.innerHTML = `
                     <div class="col-12 text-center py-5">
                         <p>No popular movies found.</p>
@@ -39,7 +37,7 @@ function loadPopularMovies() {
             }
             
             // Create movie cards
-            moviesToShow.forEach(movie => {
+            movies.forEach(movie => {
                 const movieCard = Utils.createMovieCard(movie);
                 popularMoviesContainer.appendChild(movieCard);
             });
