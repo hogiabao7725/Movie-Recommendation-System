@@ -33,4 +33,4 @@ def main():
     logger.info(f"Model saved to {model_path}")
 
 if __name__ == "__main__":
-    main() 
+    main()
