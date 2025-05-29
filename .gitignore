@@ -1,0 +1,6 @@
+# Ignore the file's Python bytecode (auto-generate Python)
+*.pyc
+__pycache__/
+
+# Ignore the file's log
+*.log
