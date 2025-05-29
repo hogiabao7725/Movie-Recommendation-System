@@ -15,6 +15,7 @@ from app.core.logging import logger
 from app.models.hybrid import HybridRecommender
 from app.api.routes.movies import router as movie_router
 from app.api.services.tmdb import TMDBService
+from app.data.id_mapper import MovieIdMapper
 
 class RecommendationRequest(BaseModel):
     user_id: int
@@ -44,6 +45,7 @@ app.include_router(movie_router, prefix="/api/v1", tags=["movies"])
 
 recommender = None
 tmdb_service = TMDBService(api_key=settings.TMDB_API_KEY)
+id_mapper = MovieIdMapper()
 
 @app.on_event("startup")
 def load_model():
@@ -54,6 +56,10 @@ def load_model():
         raise RuntimeError(f"Model file not found at {model_path}")
     recommender = joblib.load(model_path)
     logger.info("Model loaded successfully")
+    
+    # Load ID mappings
+    id_mapper.load_mappings()
+    logger.info("ID mappings loaded successfully")
 
 @app.get("/")
 def root():
@@ -72,12 +78,6 @@ def get_recommendations(request: RecommendationRequest):
     """
     if recommender is None:
         raise HTTPException(status_code=500, detail="Model not loaded")
-    
-    # Use a simple cache to avoid recalculating frequently requested recommendations
-    cache_key = f"recommendations_{request.user_id}_{request.limit}"
-    
-    # Check if we have cached results (would be implemented with Redis in production)
-    # For now, we'll just proceed with generating recommendations
     
     try:
         needed_count = request.limit
@@ -98,19 +98,25 @@ def get_recommendations(request: RecommendationRequest):
             if len(enriched_results) >= needed_count:
                 break
                 
-            movie_id = rec["movieId"]
-            if movie_id in tried_movie_ids:
+            movielens_id = rec["movieId"]
+            if movielens_id in tried_movie_ids:
                 continue
                 
-            tried_movie_ids.add(movie_id)
+            tried_movie_ids.add(movielens_id)
             
             try:
+                # Convert MovieLens ID to TMDB ID
+                tmdb_id = id_mapper.get_tmdb_id(movielens_id)
+                if tmdb_id is None:
+                    logger.warning(f"No TMDB ID mapping found for MovieLens ID {movielens_id}")
+                    continue
+                
                 # Get movie details from TMDB
-                movie = tmdb_service.get_movie_details(movie_id)
+                movie = tmdb_service.get_movie_details(tmdb_id)
                 
                 # Create standardized movie object with recommendation scores
                 enriched_results.append({
-                    "id": movie_id,  # Make consistent with Movie object from movies API
+                    "id": tmdb_id,  # Use TMDB ID for consistency with Movie object from movies API
                     "title": movie["title"],
                     "genres": [genre["name"] for genre in movie["genres"]],
                     "poster_path": tmdb_service.get_poster_url(movie["poster_path"]),
@@ -126,7 +132,7 @@ def get_recommendations(request: RecommendationRequest):
                     "collab_weight": getattr(recommender, "collab_weight", 0.5),
                 })
             except Exception as e:
-                logger.error(f"Error fetching details for movie {movie_id}: {str(e)}")
+                logger.error(f"Error fetching details for movie {movielens_id}: {str(e)}")
                 continue
                 
         # Return exactly the requested number of recommendations
