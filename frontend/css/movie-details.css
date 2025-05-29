@@ -1,0 +1,67 @@
+/* Additional styles for the movie details page */
+.movie-detail-header {
+    display: flex;
+    margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.movie-detail-poster {
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin-right: 30px;
+    object-fit: cover;
+}
+
+.movie-detail-info {
+    flex: 1;
+}
+
+.movie-detail-overview {
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.cast-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 15px 0;
+    gap: 20px;
+    scrollbar-width: thin;
+}
+
+.cast-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.cast-item:hover .cast-photo {
+    transform: scale(1.1);
+}
+
+/* Responsive iframe */
+.ratio {
+    max-width: 800px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .movie-detail-header {
+        flex-direction: column;
+    }
+    
+    .movie-detail-poster {
+        width: 100%;
+        max-width: 300px;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}

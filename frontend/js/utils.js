@@ -180,12 +180,11 @@ const Utils = {
         cardContent += `
             </div>
         `;
+          card.innerHTML = cardContent;
         
-        card.innerHTML = cardContent;
-        
-        // Add click event to show movie details
+        // Add click event to navigate to movie details page
         card.addEventListener('click', () => {
-            this.showMovieDetails(movie.id);
+            window.location.href = `movie-details.html?id=${movie.id}`;
         });
         
         col.appendChild(card);
