@@ -14,6 +14,7 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.models.hybrid import HybridRecommender
 from app.api.routes.movies import router as movie_router
+from app.api.routes.dashboard import router as dashboard_router
 from app.api.services.tmdb import TMDBService
 from app.data.id_mapper import MovieIdMapper
 
@@ -40,8 +41,9 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-# Include movie API routes
+# Include API routes
 app.include_router(movie_router, prefix="/api/v1", tags=["movies"])
+app.include_router(dashboard_router, prefix="/api/v1", tags=["dashboard"])
 
 recommender = None
 tmdb_service = TMDBService(api_key=settings.TMDB_API_KEY)

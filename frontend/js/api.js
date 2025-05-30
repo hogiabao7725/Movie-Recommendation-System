@@ -109,8 +109,7 @@ const ApiService = {    /**
      * @param {number} userId - User ID
      * @param {number} limit - Number of recommendations to get
      * @returns {Promise} - Promise with recommended movies
-     */
-    getRecommendations: function(userId, limit = 10, signal = undefined) {
+     */    getRecommendations: function(userId, limit = 10, signal = undefined) {
         console.log(`Fetching recommendations for user ${userId}, limit: ${limit}`);
         // Use the same parameter naming for consistency with other API calls
         return fetch(`${API_BASE_URL}/recommendations`, {
@@ -138,5 +137,26 @@ const ApiService = {    /**
             console.error('Error fetching recommendations:', error);
             throw error;
         });
+    },
+    
+    /**
+     * Get user dashboard data with recommendation analysis
+     * @param {number} userId - User ID
+     * @returns {Promise} - Promise with dashboard data
+     */
+    getUserDashboard: function(userId) {
+        return fetch(`${API_BASE_URL}/dashboard/user/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })            .catch(error => {
+                console.error('Error fetching user dashboard:', error);
+                throw error;
+            });
     }
 };
+
+// Make ApiService available as API for backward compatibility
+const API = ApiService;
