@@ -5,8 +5,16 @@ import pandas as pd
 from app.models.hybrid import HybridRecommender
 from ..services.recommendation import get_recommender_model
 from ...data.processor import DataProcessor
+from ...data.id_mapper import MovieIdMapper
+from ..services.tmdb import TMDBService
+from app.core.config import settings
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
+
+# Initialize services
+tmdb_service = TMDBService(api_key=settings.TMDB_API_KEY)
+id_mapper = MovieIdMapper()
+id_mapper.load_mappings()
 
 @router.get("/user/{user_id}")
 def get_user_dashboard(user_id: int, recommender: HybridRecommender = Depends(get_recommender_model)):
@@ -16,6 +24,9 @@ def get_user_dashboard(user_id: int, recommender: HybridRecommender = Depends(ge
     try:
         # Get recommendations with detailed scores
         recommendations = recommender.get_recommendations(user_id, 24)
+        
+        # Process recommendations to include TMDB IDs
+        processed_recommendations = _process_recommendations_with_tmdb_ids(recommendations)
         
         # Analyze favorite genres
         genre_preferences = _analyze_genre_preferences(user_id, recommender)
@@ -30,7 +41,7 @@ def get_user_dashboard(user_id: int, recommender: HybridRecommender = Depends(ge
         content_keywords = _analyze_content_keywords(user_id, recommender)
         
         return {
-            "recommendations": recommendations,
+            "recommendations": processed_recommendations,
             "genre_preferences": genre_preferences,
             "user_factors": user_factors,
             "similar_users": similar_users,
@@ -175,3 +186,27 @@ def _analyze_content_keywords(user_id: int, recommender: HybridRecommender) -> D
     except Exception as e:
         print(f"Error analyzing content keywords: {e}")
         return {}
+
+def _process_recommendations_with_tmdb_ids(recommendations):
+    """
+    Process movie recommendations by adding TMDB IDs for frontend compatibility
+    
+    Args:
+        recommendations: List of movie recommendations with MovieLens IDs
+        
+    Returns:
+        List of processed recommendations with TMDB IDs included
+    """
+    processed_recommendations = []
+    
+    for rec in recommendations:
+        movielens_id = rec["movieId"]
+        tmdb_id = id_mapper.get_tmdb_id(movielens_id)
+        
+        if tmdb_id:
+            # Create a copy of the recommendation with TMDB ID added
+            processed_rec = rec.copy()
+            processed_rec["id"] = tmdb_id  # Add TMDB ID for frontend compatibility
+            processed_recommendations.append(processed_rec)
+    
+    return processed_recommendations

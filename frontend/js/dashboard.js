@@ -335,10 +335,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
-            
-            // Add click event to go to movie details
+              // Add click event to go to movie details
             card.addEventListener('click', () => {
-                window.location.href = `movie-details.html?id=${movie.movieId}`;
+                // Use TMDB ID (from backend processed data) instead of MovieLens ID
+                window.location.href = `movie-details.html?id=${movie.id}`;
             });
             
             container.appendChild(card);
