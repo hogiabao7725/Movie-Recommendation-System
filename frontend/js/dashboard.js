@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const dashboardContent = document.getElementById('dashboard-content');
     const loadingSection = document.getElementById('loading');
     const errorSection = document.getElementById('error-message');
+    
+    // Lưu trữ các biểu đồ đã tạo để xóa sau này
+    let charts = {
+        genreChart: null,
+        keywordsChart: null,
+        factorsChart: null
+    };
 
     // Event listener for the load button
     loadBtn.addEventListener('click', loadUserDashboard);
@@ -22,7 +29,39 @@ document.addEventListener('DOMContentLoaded', function() {
         userIdInput.value = urlParams.get('userId');
         loadUserDashboard();
     }
+    
+    // Xóa toàn bộ biểu đồ đã tồn tại
+    function resetCharts() {
+        // Xóa các biểu đồ cũ nếu tồn tại
+        if (charts.genreChart) {
+            charts.genreChart.destroy();
+            charts.genreChart = null;
+        }
+        
+        if (charts.keywordsChart) {
+            charts.keywordsChart.destroy();
+            charts.keywordsChart = null;
+        }
+        
+        if (charts.factorsChart) {
+            charts.factorsChart.destroy();
+            charts.factorsChart = null;
+        }
+        
+        // Xóa nội dung container hiển thị phim
+        const recommendationsContainer = document.getElementById('recommendations-grid');
+        if (recommendationsContainer) {
+            recommendationsContainer.innerHTML = '';
+        }
+        
+        // Xóa nội dung insight text
+        const insightElements = document.querySelectorAll('.insight-text');
+        insightElements.forEach(element => {
+            element.textContent = '';
+        });
+    }
 
+    // Load user dashboard data and render
     function loadUserDashboard() {
         const userId = userIdInput.value;
         if (!userId) {
@@ -38,7 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show loading and hide other sections
         dashboardContent.classList.add('hidden');
         errorSection.classList.add('hidden');
-        loadingSection.classList.remove('hidden');        // Fetch dashboard data
+        loadingSection.classList.remove('hidden');
+        
+        // Xóa nội dung biểu đồ cũ trước khi tải dữ liệu mới
+        resetCharts();
+        
+        // Fetch dashboard data
         ApiService.getUserDashboard(userId)
             .then(data => {
                 // Hide loading and show content
@@ -47,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Render dashboard components
                 renderGenrePreferences(data.genre_preferences);
+                renderContentKeywords(data.content_keywords);
                 renderUserFactors(data.user_factors);
                 renderRecommendations(data.recommendations);
             })
@@ -55,9 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadingSection.classList.add('hidden');
                 errorSection.classList.remove('hidden');
             });
-    }
-
-    function renderGenrePreferences(genrePreferences) {
+    }    function renderGenrePreferences(genrePreferences) {
         // If no data, show message
         if (!genrePreferences || Object.keys(genrePreferences).length === 0) {
             document.getElementById('genre-insight').textContent = 
@@ -73,15 +116,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = Object.values(genrePreferences);
         
         // Create pie chart
-        new Chart(ctx, {
+        charts.genreChart = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: labels,
                 datasets: [{
                     data: data,
                     backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-                        '#FF9F40', '#C9CBCF', '#7BC043', '#F37736', '#EE4035'
+                        '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107',
+                        '#FF9800', '#FF5722', '#F44336', '#E91E63', '#9C27B0'
                     ]
                 }]
             },
@@ -91,6 +134,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     legend: {
                         position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Genre Distribution in Your Recommendations',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${(value * 100).toFixed(1)}%`;
+                            }
+                        }
                     }
                 }
             }
@@ -99,10 +158,76 @@ document.addEventListener('DOMContentLoaded', function() {
         // Generate insight text
         const topGenres = labels.slice(0, 3).join(', ');
         document.getElementById('genre-insight').textContent = 
-            `Based on your viewing history and preferences, you seem to enjoy ${topGenres} movies the most.`;
-    }
+            `Based on your viewing history and hybrid recommendations, you seem to enjoy ${topGenres} movies the most. These genres appear most frequently in your personalized recommendations.`;
+    }    
 
-    function renderUserFactors(userFactors) {
+    function renderContentKeywords(contentKeywords) {
+        // If no data, exit
+        if (!contentKeywords || Object.keys(contentKeywords).length === 0) {
+            document.getElementById('content-insight').textContent = 
+                'No content keyword data available for this user.';
+            return;
+        }
+
+        // Get the canvas and create chart
+        const ctx = document.getElementById('content-keywords-chart').getContext('2d');
+        
+        // Prepare data for chart
+        const labels = Object.keys(contentKeywords);
+        const data = Object.values(contentKeywords);
+        
+        // Create word cloud-like bar chart for keywords
+        charts.keywordsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: 'rgba(76, 175, 80, 0.5)',
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',  // Horizontal bar chart
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Top Keywords from Content-Based Analysis',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw || 0;
+                                return `Relevance: ${(value * 100).toFixed(1)}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Relevance Score'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Generate insight text
+        const topKeywords = labels.slice(0, 5).join(', ');
+        document.getElementById('content-insight').textContent = 
+            `Based on content analysis, keywords like "${topKeywords}" appear most frequently in movies recommended for you. These keywords help our system find movies with content similar to your preferences.`;
+    }    function renderUserFactors(userFactors) {
         // If no data, exit
         if (!userFactors || userFactors.length === 0) return;
 
@@ -114,24 +239,61 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = userFactors.map(f => f.value);
         
         // Create bar chart
-        new Chart(ctx, {
+        charts.factorsChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Factor Weight',
+                    label: 'Factor Influence',
                     data: data,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(33, 150, 243, 0.5)',
+                    borderColor: 'rgba(33, 150, 243, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Collaborative Filtering Latent Factors',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return `${tooltipItems[0].label}`;
+                            },
+                            label: function(context) {
+                                return `Influence: ${context.raw.toFixed(4)}`;
+                            },
+                            afterLabel: function() {
+                                return 'These represent patterns discovered by the collaborative filtering algorithm.';
+                            }
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            text: 'Collaborative Filtering Factors'
+                        }
+                    }
+                },
                 scales: {
                     y: {
-                        beginAtZero: false
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Factor Influence'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Latent Factors'
+                        }
                     }
                 }
             }

@@ -26,11 +26,15 @@ def get_user_dashboard(user_id: int, recommender: HybridRecommender = Depends(ge
         # Get similar users
         similar_users = _get_similar_users(user_id, recommender)
         
+        # Get content-based keyword analysis
+        content_keywords = _analyze_content_keywords(user_id, recommender)
+        
         return {
             "recommendations": recommendations,
             "genre_preferences": genre_preferences,
             "user_factors": user_factors,
-            "similar_users": similar_users
+            "similar_users": similar_users,
+            "content_keywords": content_keywords
         }
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"Error generating dashboard: {str(e)}")
@@ -108,3 +112,66 @@ def _get_similar_users(user_id: int, recommender: HybridRecommender) -> List[int
         return similar_user_ids
     except Exception:
         return []
+
+def _analyze_content_keywords(user_id: int, recommender: HybridRecommender) -> Dict[str, float]:
+    """Analyze top keywords from content-based model for the user's recommendations"""
+    try:
+        # Get recommendations
+        recs = recommender.get_recommendations(user_id, 10)
+        
+        # If no recommendations, return empty
+        if not recs:
+            return {}
+        
+        # Get TF-IDF feature names if available
+        if not hasattr(recommender.content_model, 'vectorizer') or not recommender.content_model.vectorizer:
+            return {}
+            
+        # Get feature names (words) from the vectorizer
+        try:
+            feature_names = recommender.content_model.vectorizer.get_feature_names_out()
+        except:
+            # Fallback for older sklearn versions
+            feature_names = recommender.content_model.vectorizer.get_feature_names()
+        
+        # Calculate average importance of each keyword across recommended movies
+        keyword_scores = {}
+        
+        # For each recommended movie
+        for rec in recs:
+            movie_id = rec['movieId']
+            
+            # Get the movie's index in the TF-IDF matrix
+            if movie_id not in recommender.content_model.movie_to_idx:
+                continue
+                
+            idx = recommender.content_model.movie_to_idx[movie_id]
+            
+            # Get the movie's TF-IDF vector
+            movie_vector = recommender.content_model.tfidf_matrix[idx].toarray()[0]
+            
+            # Get top keywords for this movie
+            top_keyword_indices = movie_vector.argsort()[-20:][::-1]
+            
+            # Add to the total score for each keyword
+            for i in top_keyword_indices:
+                if movie_vector[i] > 0:  # Only consider non-zero values
+                    keyword = feature_names[i]
+                    if keyword.isalpha() and len(keyword) > 2:  # Filter out non-word tokens
+                        if keyword not in keyword_scores:
+                            keyword_scores[keyword] = 0
+                        keyword_scores[keyword] += movie_vector[i]
+        
+        # Sort by score and take top 15
+        sorted_keywords = dict(sorted(keyword_scores.items(), key=lambda x: x[1], reverse=True)[:15])
+        
+        # Normalize scores
+        total = sum(sorted_keywords.values())
+        if total > 0:
+            normalized_keywords = {k: v/total for k, v in sorted_keywords.items()}
+            return normalized_keywords
+            
+        return sorted_keywords
+    except Exception as e:
+        print(f"Error analyzing content keywords: {e}")
+        return {}

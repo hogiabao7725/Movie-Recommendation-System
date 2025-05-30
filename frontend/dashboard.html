@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Movie Recommendations</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/explanation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -22,9 +23,7 @@
                 </ul>
             </nav>
         </div>
-    </header>
-
-    <main class="container">
+    </header>    <main class="container">
         <h2>User Dashboard</h2>
         <p>This dashboard shows why you're receiving these movie recommendations.</p>
 
@@ -35,8 +34,41 @@
         </div>
 
         <div id="dashboard-content" class="hidden">
+            <section class="dashboard-section explanation-section">
+                <h3>How Our Hybrid Recommendation System Works</h3>
+                <div class="recommendation-explanation">
+                    <div class="explanation-column">
+                        <h4>Content-Based Filtering</h4>
+                        <div class="explanation-icon content-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <p>Analyzes movie characteristics like genres, titles, and keywords to find similar movies to ones you've enjoyed.</p>
+                        <div class="small-text">Example: If you liked "The Matrix", this system might recommend "Inception" because both share sci-fi themes.</div>
+                    </div>
+                    <div class="explanation-plus">+</div>
+                    <div class="explanation-column">
+                        <h4>Collaborative Filtering</h4>
+                        <div class="explanation-icon collab-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <p>Identifies patterns among users with similar taste profiles to recommend movies liked by similar users.</p>
+                        <div class="small-text">Example: If users who enjoyed the same movies as you also liked "The Godfather", it will be recommended to you.</div>
+                    </div>
+                    <div class="explanation-equals">=</div>
+                    <div class="explanation-column">
+                        <h4>Hybrid System</h4>
+                        <div class="explanation-icon hybrid-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>Combines both approaches with equal weight (50% each) to provide the most accurate and personalized recommendations.</p>
+                        <div class="small-text">Your final Match Score = Content Match × 50% + Collaborative Match × 50%</div>
+                    </div>
+                </div>
+            </section>
+
             <section class="dashboard-section">
                 <h3>Your Genre Preferences</h3>
+                <p class="section-description">Based on analysis of recommendations from our hybrid system</p>
                 <div class="chart-container">
                     <canvas id="genre-chart"></canvas>
                 </div>
@@ -44,15 +76,26 @@
             </section>
 
             <section class="dashboard-section">
-                <h3>Your Taste Profile</h3>
+                <h3>Content-Based Keyword Analysis</h3>
+                <p class="section-description">From our Content-Based model - showing important terms that influence your recommendations</p>
+                <div class="chart-container">
+                    <canvas id="content-keywords-chart"></canvas>
+                </div>
+                <p class="insight-text" id="content-insight">These keywords are extracted from the movies our system thinks you'll like, based on your viewing history. The larger the word, the more influential it is in your recommendations.</p>
+            </section>
+                        
+            <section class="dashboard-section">
+                <h3>Your Collaborative Taste Profile</h3>
+                <p class="section-description">From our Collaborative Filtering model - showing latent factors that define your preferences</p>
                 <div class="chart-container">
                     <canvas id="taste-profile-chart"></canvas>
                 </div>
-                <p class="insight-text">These factors represent your unique movie preferences in the system.</p>
+                <p class="insight-text">These factors represent the hidden patterns in your viewing behavior identified by our collaborative filtering model. Higher values indicate stronger influence on your recommendations.</p>
             </section>
 
             <section class="dashboard-section">
                 <h3>Recommendation Breakdown</h3>
+                <p class="section-description">See exactly how each movie score is calculated from both recommendation methods</p>
                 <div class="recommendations-grid" id="recommendations-grid">
                     <!-- Will be filled by JavaScript -->
                 </div>
